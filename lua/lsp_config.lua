@@ -1,10 +1,5 @@
 local lspconfig = require('lspconfig')
 
-lspconfig.rust_analyzer.setup({
-	settings = {
-		['rust_analyzer'] = {},
-    }
-})
 lspconfig.tsserver.setup({})
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
@@ -45,16 +40,21 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 cmp.setup({
     snippet = {
-        expand = function(args) end
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+        end
     },
     mapping = cmp.mapping.preset.insert({
         ['<C-u>'] = cmp.mapping.scroll_docs(-4),
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
-        ['<CR>'] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        }),
+        ['<CR>'] = cmp.mapping(function(fallback)
+            if cmp.get_active_entry() then
+                cmp.confirm({select = true})
+            else
+                fallback()
+            end
+        end, {"i", "c"}),
         ['<Tab>'] = cmp.mapping(function(fallback) 
             if cmp.visible() then
                 cmp.select_next_item()
