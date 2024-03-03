@@ -20,6 +20,8 @@ vim.keymap.set('n', '<leader>fb', function()
     require('telescope.builtin').buffers()
 end)
 
+
+
 require('crates').setup()
 
 require('rust-tools').setup({
@@ -29,7 +31,7 @@ require('rust-tools').setup({
                 checkOnSave = {
                     command = "clippy"
                 },
-                check = {
+                check = { 
                     command = "clippy"
                 }
             }
@@ -37,6 +39,3 @@ require('rust-tools').setup({
     }
 })
 
-require("nvim-treesitter.configs").setup({
-    ensure_installed = { "c", "lua", "vim", "query", "typescript", "javascript", "rust", "cpp" }
-})
