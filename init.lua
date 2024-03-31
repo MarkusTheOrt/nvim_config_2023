@@ -157,7 +157,7 @@ require("lazy").setup({
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       -- Load the colorscheme here
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'tokyonight'
 
       -- You can configure highlights by doing something like
       vim.cmd.hi 'Comment gui=none'
@@ -273,6 +273,10 @@ require("lazy").setup({
     },
     { -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
+
+        opts = {
+            inlay_hints = { enabled = true },
+        },
         dependencies = {
             -- Automatically install LSPs and related tools to stdpath for neovim
             'williamboman/mason.nvim',

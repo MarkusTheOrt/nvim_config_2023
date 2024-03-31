@@ -18,6 +18,7 @@ vim.keymap.set('n', '<leader>fb', function()
 end)
 
 
+vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled());
 
 require('crates').setup()
 
