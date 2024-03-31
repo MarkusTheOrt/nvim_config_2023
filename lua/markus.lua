@@ -1,12 +1,9 @@
 vim.g.mapleader = " "
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.colorscheme = "oxocarbon"
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
-
-vim.cmd([[colorscheme oxocarbon]])
 
 vim.keymap.set('n', '<leader>ff', function()
     require('telescope.builtin').find_files()
