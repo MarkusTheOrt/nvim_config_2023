@@ -18,22 +18,7 @@ vim.keymap.set('n', '<leader>fb', function()
 end)
 
 
-vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled());
+-- vim.lsp.inlay_hint.enable(0, true);
 
 require('crates').setup()
-
-require('rust-tools').setup({
-    server = {
-        settings = {
-            ["rust-analyzer"] = {
-                checkOnSave = {
-                    command = "clippy"
-                },
-                check = { 
-                    command = "clippy"
-                }
-            }
-        }
-    }
-})
 

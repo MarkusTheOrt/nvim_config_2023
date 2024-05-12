@@ -329,7 +329,7 @@ require("lazy").setup({
                     local map = function(keys, func, desc)
                         vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
                     end
-
+                    vim.lsp.inlay_hint.enable(event.buf, true);
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
                     -- Jump to the definition of the word under your cursor.
                     --  This is where a variable was first declared, or where a function is defined, etc.
@@ -438,6 +438,18 @@ require("lazy").setup({
                         },
                     }
                 },
+                rust_analyzer = {
+                    settings = {
+                        rust_analyzer = {
+                            checkOnSave = {
+                                command = "clippy"
+                            },
+                            check = {
+                                command = "clippy"
+                            }
+                        }
+                    }
+                },
                 tsserver = {},
                 lua_ls = {
                     settings = {
@@ -482,7 +494,7 @@ require("lazy").setup({
             }
         end,
     },
-    "simrat39/rust-tools.nvim",
+ --   "simrat39/rust-tools.nvim",
     "Saecki/crates.nvim",
     "nyoom-engineering/oxocarbon.nvim",
     "L3MON4D3/LuaSnip",
