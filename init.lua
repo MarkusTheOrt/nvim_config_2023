@@ -282,6 +282,7 @@ require("lazy").setup({
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
             'WhoIsSethDaniel/mason-tool-installer.nvim',
+            'b0o/SchemaStore.nvim',
 
             -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -329,7 +330,7 @@ require("lazy").setup({
                     local map = function(keys, func, desc)
                         vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
                     end
-                    vim.lsp.inlay_hint.enable(event.buf, true);
+                    vim.lsp.inlay_hint.enable(true);
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
                     -- Jump to the definition of the word under your cursor.
                     --  This is where a variable was first declared, or where a function is defined, etc.
@@ -426,16 +427,23 @@ require("lazy").setup({
                     }
                 },
                 zls = {
-                    cmd = { 'E:\\Zig\\2341\\zls.exe' },
                     settings = {
                         zls = {
-                            path = 'E:\\Zig\\2341\\zls.exe',
                             enable_inlay_hints = true,
                             inlay_hints_show_builtin = true,
                             inlay_hints_exclude_single_argument = true,
                             inlay_hints_hide_redundant_param_names = false,
-                            inlay_hints_hide_redundant_param_names_last_token = false,
-                        },
+                            inlay_hints_hide_redundant_param_names_last_token = false
+                        }
+                    }
+                },
+                ['openscad-lsp'] = {},
+                jsonls = {
+                    settings = {
+                        json = {
+                            schemas = require('schemastore').json.schemas(),
+                            validate = { enable = true },
+                        }
                     }
                 },
                 rust_analyzer = {
