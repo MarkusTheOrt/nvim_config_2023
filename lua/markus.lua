@@ -17,8 +17,11 @@ vim.keymap.set('n', '<leader>fb', function()
     require('telescope.builtin').buffers()
 end)
 
+vim.keymap.set('n', '<leader>f', function ()
+    vim.lsp.buf.format()
+end)
 
 -- vim.lsp.inlay_hint.enable(0, true);
 
-require('crates').setup()
+require('crates').setup({})
 
