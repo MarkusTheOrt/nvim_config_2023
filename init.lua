@@ -35,7 +35,8 @@ require("lazy").setup({
                     'rust',
                     'javascript',
                     'typescript',
-                    'cpp'
+                    'cpp',
+                    'zig'
                 },
 
                 -- Autoinstall languages that are not installed
@@ -153,11 +154,20 @@ require("lazy").setup({
         --
         -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
         'folke/tokyonight.nvim',
+        opts = {
+            transparent = true,
+            styles = {
+                sidebars = "transparent",
+                floats = "transparent",
+            }
+        },
         lazy = false, -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
         config = function()
             -- Load the colorscheme here
-            vim.cmd.colorscheme 'tokyonight'
+            vim.cmd.colorscheme 'tokyonight-night'
+            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
             -- You can configure highlights by doing something like
             vim.cmd.hi 'Comment gui=none'
@@ -448,7 +458,7 @@ require("lazy").setup({
                 },
                 rust_analyzer = {
                     settings = {
-                        rust_analyzer = {
+                        ["rust-analyzer"] = {
                             checkOnSave = {
                                 command = "clippy"
                             },
