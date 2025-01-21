@@ -166,8 +166,6 @@ require("lazy").setup({
         config = function()
             -- Load the colorscheme here
             vim.cmd.colorscheme 'tokyonight-night'
-            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
             -- You can configure highlights by doing something like
             vim.cmd.hi 'Comment gui=none'
@@ -546,6 +544,9 @@ require("lazy").setup({
     },
 
 })
+
+vim.cmd('set colorcolumn=80');
+vim.cmd('highlight ColorColumn ctermbg=magenta guibg=#660066');
 
 require("markus")
 require("lsp_config")
