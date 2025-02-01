@@ -57,11 +57,34 @@ require("lazy").setup({
     "nvim-tree/nvim-web-devicons",
     {
         'nvim-tree/nvim-tree.lua',
-        config = function ()
-            require('nvim-tree').setup()
+        config = function()
+            require('nvim-tree').setup({
+                view = {
+                    side = 'right',
+                }
+            })
         end
     },
-    {  -- Autocompletion
+    {
+        'nvim-lualine/lualine.nvim',
+        config = function()
+            require('lualine').setup {
+                options = {
+                    theme = 'tokyonight',
+                    component_separators = { left = '•', right = '•' }, --  ·•
+                    section_separators = { left = '', right = '' }, --  
+                    globalstatus = true,
+                }
+            }
+        end
+    },
+    {
+        'lewis6991/gitsigns.nvim',
+        config = function()
+            require('gitsigns').setup()
+        end
+    },
+    { -- Autocompletion
         'hrsh7th/nvim-cmp',
         event = 'InsertEnter',
         dependencies = {
@@ -167,7 +190,7 @@ require("lazy").setup({
                 floats = "transparent",
             }
         },
-        lazy = false, -- make sure we load this during startup if it is your main colorscheme
+        lazy = false,    -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
         config = function()
             -- Load the colorscheme here
@@ -332,6 +355,9 @@ require("lazy").setup({
             --    That is to say, every time a new file is opened that is associated with
             --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
             --    function will be executed to configure the current buffer
+            vim.diagnostic.config({
+                signs = true
+            })
             vim.api.nvim_create_autocmd('LspAttach', {
                 group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
                 callback = function(event)
@@ -508,13 +534,21 @@ require("lazy").setup({
             })
         end,
     },
-    --   "simrat39/rust-tools.nvim",
     "Saecki/crates.nvim",
     "nyoom-engineering/oxocarbon.nvim",
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
     "wuelnerdotexe/vim-astro",
-    { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+    {
+        'folke/todo-comments.nvim',
+        event = 'VimEnter',
+        dependencies = {
+            'nvim-lua/plenary.nvim'
+        },
+        opts = {
+            signs = true
+        }
+    },
     {
         'echasnovski/mini.nvim',
         config = function()
@@ -532,20 +566,6 @@ require("lazy").setup({
             -- - sd'   - [S]urround [D]elete [']quotes
             -- - sr)'  - [S]urround [R]eplace [)] [']
             require('mini.surround').setup()
-
-            -- Simple and easy statusline.
-            --  You could remove this setup call if you don't like it,
-            --  and try some other statusline plugin
-            local statusline = require 'mini.statusline'
-            statusline.setup()
-
-            -- You can configure sections in the statusline by overriding their
-            -- default behavior. For example, here we disable the section for
-            -- cursor information because line numbers are already enabled
-            ---@diagnostic disable-next-line: duplicate-set-field
-            statusline.section_location = function()
-                return ''
-            end
         end,
     },
 
