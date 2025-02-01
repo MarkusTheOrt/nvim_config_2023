@@ -55,6 +55,12 @@ require("lazy").setup({
     },
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
+    {
+        'nvim-tree/nvim-tree.lua',
+        config = function ()
+            require('nvim-tree').setup()
+        end
+    },
     {  -- Autocompletion
         'hrsh7th/nvim-cmp',
         event = 'InsertEnter',
@@ -455,7 +461,7 @@ require("lazy").setup({
                         }
                     }
                 },
-                tsserver = {},
+                ts_ls = {},
                 lua_ls = {
                     settings = {
                         Lua = {
