@@ -6,6 +6,8 @@ vim.o.shiftwidth = 4
 vim.o.expandtab = true
 
 
+vim.g.editorconfig = true
+
 vim.keymap.set('n', '<leader>ff', function()
     require('telescope.builtin').find_files()
 end)
