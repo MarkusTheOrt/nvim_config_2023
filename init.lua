@@ -36,7 +36,6 @@ require("lazy").setup({
                     'javascript',
                     'typescript',
                     'cpp',
-                    'zig'
                 },
 
                 -- Autoinstall languages that are not installed
@@ -184,10 +183,18 @@ require("lazy").setup({
         priority = 1000, -- make sure to load this before all the other start plugins
         config = function()
             -- Load the colorscheme here
-            vim.cmd.colorscheme 'tokyonight-night'
+ --           vim.cmd.colorscheme 'tokyonight-night'
 
             -- You can configure highlights by doing something like
-            vim.cmd.hi 'Comment gui=none'
+   --         vim.cmd.hi 'Comment gui=none'
+        end,
+    },
+    {
+        'p00f/alabaster.nvim',
+        lazy = false,
+        priority = 1000,
+        config = function()
+            vim.cmd.colorscheme 'alabaster'
         end,
     },
     "hrsh7th/cmp-nvim-lsp",
@@ -466,7 +473,12 @@ require("lazy").setup({
                     },
                 },
                 astro = {},
-                svelte = {}
+                svelte = {},
+                zls = {
+                    settings = {
+                        cmd = "zls",
+                    },
+                },
             }
 
             require('mason').setup()
@@ -485,13 +497,16 @@ require("lazy").setup({
                         local server = servers[server_name] or {}
 
                         server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-                        require('lspconfig')[server_name].setup(server)
+                        vim.lsp.config[server_name] = server
+                        vim.lsp.enable(server_name)
+ --                       require('lspconfig')[server_name].setup(server)
                     end,
                 },
             }
-            require('lspconfig').zls.setup({
+            vim.lsp.config['zls'] = {
                 cmd = { "zls" }
-            })
+            }
+            vim.lsp.enable('zls')
         end,
     },
     "Saecki/crates.nvim",
@@ -530,14 +545,83 @@ require("lazy").setup({
     },
     {
         "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-        config = function ()
+        config = function()
             require("lsp_lines").setup()
             vim.diagnostic.config({
                 virtual_text = false,
                 virtual_lines = true,
             })
         end,
+    },
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        opts = {},
+        keys = {
+            { "zk",    mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+            { "Zk",    mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+            { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+            { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+            { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+        },
+    },
+    {
+        'Wansmer/treesj',
+        keys = { '<space>m', '<space>j', '<space>s' },
+        dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+        config = function()
+            require('treesj').setup({ --[[ your config ]] })
+        end,
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        dependencies = { 'nvim-treesitter' },
+        config = function()
+            require("nvim-treesitter.configs").setup({
+                textobjects = {
+                    move = {
+                        enable = true,
+                        set_jumps = true, -- whether to set jumps in the jumplist
+                        goto_next_start = {
+                            ["]m"] = "@function.outer",
+                            ["]]"] = { query = "@class.outer", desc = "Next class start" },
+                            --
+                            -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queries.
+                            ["]o"] = "@loop.*",
+                            -- ["]o"] = { query = { "@loop.inner", "@loop.outer" } }
+                            --
+                            -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+                            -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+                            ["]s"] = { query = "@local.scope", query_group = "locals", desc = "Next scope" },
+                            ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+                        },
+                        goto_next_end = {
+                            ["]M"] = "@function.outer",
+                            ["]["] = "@class.outer",
+                        },
+                        goto_previous_start = {
+                            ["[m"] = "@function.outer",
+                            ["[["] = "@class.outer",
+                        },
+                        goto_previous_end = {
+                            ["[M"] = "@function.outer",
+                            ["[]"] = "@class.outer",
+                        },
+                        -- Below will go to either the start or the end, whichever is closer.
+                        -- Use if you want more granular movements
+                        -- Make it even more gradual by adding multiple queries and regex.
+                        goto_next = {
+                            ["]d"] = "@conditional.outer",
+                        },
+                        goto_previous = {
+                            ["[d"] = "@conditional.outer",
+                        }
+                    },
+                }
+            })
+        end
     }
+
 
 })
 
